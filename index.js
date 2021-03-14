@@ -1237,21 +1237,13 @@ client.on('group-participants-update', async (anu) => {
 					await limitAdd(sender)
 					break
 				case 'map':
-				if (!isRegistered) return reply(mess.only.daftarB)
-				if (args.length < 1) return reply('Ingresa el nombre del área')
-						daerah = body.slice(5)
-						try {
-						data = await fetchJson(`https://mnazria.herokuapp.com/api/maps?search=${daerah}`)
-						reply(mess.wait)
-						hasil = await getBuffer(data.gambar)
-						client.sendMessage(from, hasil, image, {
-					  quoted: mek, caption: `Resultado *${daerah}*`
-						})
-						
-						} catch {
-						  reply(mess.ferr)
-						}
-						break
+				if (!isRegistered) return reply(ind.noregis())
+				if (isLimit(sender)) return reply(ind.limitend(pusname))
+               	 anu = await fetchJson(`https://mnazria.herokuapp.com/api/maps?search=${body.slice(5)}`, {method: 'get'})
+               	 buffer = await getBuffer(anu.gambar)
+              	  client.sendMessage(from, buffer, image, {quoted: mek, caption: `${body.slice(5)}`})
+				await limitAdd(sender)
+				break
                 case 'kbbi':
                 if (!isRegistered) return reply(ind.noregis())
                 if (isLimit(sender)) return reply(ind.limitend(pusname))
